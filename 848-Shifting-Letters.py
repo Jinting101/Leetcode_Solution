@@ -11,3 +11,4 @@ class Solution(object):
             shift += shifts[i]
             res += chr((ord(s[i])+shift-ord('a')) % 26 + ord('a'))
         return res[::-1]
+        # Just a test to see if leetpush works!
