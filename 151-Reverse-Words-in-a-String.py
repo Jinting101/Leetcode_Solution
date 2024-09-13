@@ -26,10 +26,10 @@ class Solution(object):
             # Move to the end of the word
             while i < length and s[i] != ' ':
                 i += 1
-            end = i - 1  # End of the word
+            end = i  # End of the word
             
             # Store the start and end indices of the word
             word_positions.append((start, end))
-            result = [s[start:end + 1]] + result
+            result = [s[start:end]] + result
         
         return ' '.join(result)
