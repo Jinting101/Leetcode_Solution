@@ -1,8 +1,8 @@
 class MyCalendarTwo(object):
 
     def __init__(self):
-        self.calendar = []
-        self.overlaps = []
+        self.calendar = []  # Stores single booked intervals
+        self.overlaps = []  # Stores double booked intervals
 
     def book(self, start, end):
         """
@@ -21,13 +21,17 @@ class MyCalendarTwo(object):
         # self.calendar.append([start, end])
         # return True
 
-        for i,j in self.overlaps:
-            if start < j and end > i:
-                return False # Found a pre-existing overlap
 
-        for i,j in self.calendar:
-            if start < j and end > i:
-                self.overlaps.append((max(start,i), min(end,j)))
+        # Check if the event overlaps with any double booking, which would cause a triple booking
+        for s,e in self.overlaps:
+            if start < e and end > s:
+                return False # Found a pre-existing overlap; # Triple booking found
+        
+        # Add the overlapping parts to double bookings
+        for s,e in self.calendar:
+            if start < e and end > s:
+            # if max(start, s) < min(end, e):
+                self.overlaps.append((max(start,s), min(end,e)))
         self.calendar.append((start,end))
         return True
 
