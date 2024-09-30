@@ -36,7 +36,6 @@ class CustomStack(object):
         """
         if self.top==-1:
             return
-        t=self.top
         for i in range(min(self.top+1, k)):
             self.s[i]=self.s[i]+val
 
