@@ -16,41 +16,34 @@ class Solution(object):
         #     ans += res[i]*res[len(res)-i-1]
         # return ans
 
-        if sum(skill) % (len(skill)//2) != 0:
+        total = sum(skill)
+        if total % (len(skill) // 2) != 0:
             return -1
-        target = sum(skill) // (len(skill)//2)
 
-        freq = {}
-        for x in skill:
-            freq[x] = freq.get(x, 0) + 1
-
-        chem = 0
-        used = set()
-        for key in list(freq.keys()):
-            if key in used:
-                continue
-            freq_key = freq[key]
-            complement = target - key
-            if complement not in freq or freq_key != freq[complement] or (key == complement and freq_key%2 != 0 ):
-                return -1
-
-            if key == complement:
-                chem += (key * complement) * (freq_key // 2)
-
+        target = total // (len(skill) // 2)
+        mapp = {}
+        ans = 0
+        
+        for n in skill:
+            if target - n in mapp and mapp[target - n] > 0:
+                ans += n * (target - n)
+                mapp[target - n] -= 1
             else:
-                chem += (key * complement) * freq_key
+                mapp[n] = mapp.get(n, 0) + 1
+        
+        # Ensure all players are paired
+        for count in mapp.values():
+            if count > 0:
+                return -1
+        return int(ans)
 
-            used.add(key)
-            used.add(complement)
+# Step 1: Calculate total skill and target skill sum
+# First, calculate the total sum of all player skills. The target combined skill for each team will be the total sum divided by n / 2, where n is the total number of players.
+# If the total skill sum cannot be evenly divided, return -1, since it would be impossible to divide players into teams with equal combined skills.
 
-        return chem
+# Step 2: Use hash map to track pairings
+# Iterate through the skill array. For each skill, calculate the complement needed to achieve the target combined skill. If the complement is already in the hash map and has a non-zero count, pair the current skill with the complement, calculate the chemistry, and update the answer.
+# If the complement is not in the map, store the current skill as a potential pairing for future elements.
 
-# first we have to know the target sum of any pair /
-# that is we know that the total sum will be divided into n/2 pairs
-# so target sum=total sum/n/2
-# now that we have ts(target sum) for any skill we can fins the compleimntary skill ie ts-skill
-# now we will loop througt the array and store the frequencies of all the skills
-# then we want to check for every skill there needs to be an equal number of complimentary skills
-# if not some skills will be left out meaning not possible to make pairs meaning return -1
-# else we will keep track of their product also called chemistry and reutrn the chem finally
-
+# Step 3: Return chemistry sum
+# If all pairs are formed correctly, return the total chemistry. Otherwise, return -1 if any players remain unpaired.
