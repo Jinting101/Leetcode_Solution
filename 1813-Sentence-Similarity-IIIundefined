@@ -1,0 +1,34 @@
+class Solution(object):
+    def areSentencesSimilar(self, sentence1, sentence2):
+        """
+        :type sentence1: str
+        :type sentence2: str
+        :rtype: bool
+        """
+         # Split the sentences into words
+        words1 = sentence1.split()
+        words2 = sentence2.split()
+
+        # Ensure words1 is the longer sentence
+        if len(words1) < len(words2):
+            words1, words2 = words2, words1
+        
+        start, end = 0, 0
+        n1, n2 = len(words1), len(words2)
+        
+        # Compare from the start
+        while start < n2 and words1[start] == words2[start]:
+            start += 1
+        
+        # Compare from the end
+        while end < n2 and words1[n1 - end - 1] == words2[n2 - end - 1]:
+            end += 1
+        
+        # Check if the remaining unmatched part is in the middle
+        return start + end >= n2
+        
+# Split Words: First, we break both sentences into lists of words for easy comparison.
+# Start Comparison: We iterate from the beginning of both sentences, checking if the words are the same. This is the "start" comparison.
+# End Comparison: We then iterate from the end of both sentences, comparing the words similarly. This is the "end" comparison.
+# Middle Check: After comparing the start and end, the remaining part of the longer sentence (if any) should be in the middle, and it should be possible to insert this part into the shorter sentence.
+# Result: If the total number of matched words (from start and end) is greater than or equal to the length of the smaller sentence, the sentences are considered similar.
