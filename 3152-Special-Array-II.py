@@ -12,10 +12,7 @@ class Solution:
         for q in queries:
             x, y = q
             falseCount = cum[y] - cum[x]
-            if falseCount and x != y:
-                ans.append(False)
-            else:
-                ans.append(True)
+            ans.append(falseCount==0)
 
         return ans
 
