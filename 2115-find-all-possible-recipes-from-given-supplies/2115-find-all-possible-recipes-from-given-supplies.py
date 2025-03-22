@@ -1,5 +1,30 @@
 class Solution:
     def findAllRecipes(self, recipes: List[str], ingredients: List[List[str]], supplies: List[str]) -> List[str]:
+        adj = {}
+        avail = set(supplies)
+        memo = {}
+
+        def dfs(curr):
+            if curr in avail: return True
+            if curr in memo: return memo[curr]
+            if curr not in adj: return False
+
+            memo[curr] = False  # Assume we can't make it
+            for ing in adj[curr]:
+                if not dfs(ing):
+                    return False
+            
+            avail.add(curr)  # Now we can cook this
+            memo[curr] = True
+            return True
+        
+        # Create graph
+        for r, ing in zip(recipes, ingredients):
+            adj[r] = ing
+        
+        return [r for r in recipes if dfs(r)]
+
+
         # Initialize tracking dictionaries using comprehensions
         can_make = dict.fromkeys(supplies, True)
         recipe_to_idx = {recipe: idx for idx, recipe in enumerate(recipes)}
