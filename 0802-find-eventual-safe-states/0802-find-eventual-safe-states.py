@@ -18,8 +18,41 @@ class Solution:
             for nei in gg[cur]:
                 outdegrees[nei] -= 1
                 if outdegrees[nei] == 0:
-                    res.append(nei)
+                    q.append(nei)
         return sorted(res)
+
+        n = len(graph)
+        outdegree = [0] * n
+        adj = [[] for _ in range(n)]
+
+        for i in range(n):
+            for node in graph[i]:
+                adj[node].append(i)
+                outdegree[i] += 1
+
+        q = deque()
+        # Push all the nodes with outdegree zero in the queue.
+        for i in range(n):
+            if outdegree[i] == 0:
+                q.append(i)
+
+        safe = [False] * n
+        while q:
+            node = q.popleft()
+            safe[node] = True
+
+            for neighbor in adj[node]:
+                # Delete the edge "node -> neighbor".
+                outdegree[neighbor] -= 1
+                if outdegree[neighbor] == 0:
+                    q.append(neighbor)
+
+        safeNodes = []
+        for i in range(n):
+            if safe[i]:
+                safeNodes.append(i)
+
+        return safeNodes
 
 
 
