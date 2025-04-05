@@ -9,7 +9,7 @@ class Solution:
         def dfs(node, depth):
             if not node:
                 # If node is None, return (None, current depth)
-                return (None, depth)
+                return (None, depth-1)
             
             # Recursively traverse left and right children
             left_lca, left_depth = dfs(node.left, depth + 1)
