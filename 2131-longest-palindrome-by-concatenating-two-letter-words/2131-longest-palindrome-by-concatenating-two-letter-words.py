@@ -1,5 +1,20 @@
 class Solution:
     def longestPalindrome(self, words: List[str]) -> int:
+        cnt, res, center = Counter(words), 0, False
+        for w, c in cnt.items():
+            rev = w[::-1]
+            if w < rev and rev in cnt:
+                res += 4 * min(c, cnt[rev])
+            if w[0] == w[1]:
+                res += 4 * (c // 2)
+                if cnt[w] % 2:
+                    center = True
+        if center:
+            res += 2
+        return res
+
+
+
         res = 0
         dic = {}
         for x in words:
