@@ -1,29 +1,25 @@
 class Solution:
-    def shortestPaths(self, edges: List[int], src: int) -> List[int]:
-        n = len(edges)
-        dist = [float('inf')] * n
-        dist[src] = 0
-        q = deque()
-        q.append((src, 0))
-
-        while q:
-            node, d = q.popleft()
-            if edges[node] != -1 and dist[edges[node]] > d + 1:
-                dist[edges[node]] = d + 1
-                q.append((edges[node], dist[edges[node]]))
-        return dist
-
     def closestMeetingNode(self, edges: List[int], node1: int, node2: int) -> int:
-        Spath1 = self.shortestPaths(edges, node1)
-        Spath2 = self.shortestPaths(edges, node2)
+        def get_distances(start):
+            dist = [-1] * len(edges)
+            d = 0
+            while start != -1 and dist[start] == -1:
+                dist[start] = d
+                start = edges[start]
+                d += 1
+            return dist
 
-        ansNode = -1
-        preMax = float('inf')
+        dist1 = get_distances(node1)
+        dist2 = get_distances(node2)
+
+        min_dist = float('inf')
+        result = -1
 
         for i in range(len(edges)):
-            pMax = max(Spath1[i], Spath2[i])
-            if Spath1[i] != float('inf') and Spath2[i] != float('inf') and pMax < preMax:
-                preMax = pMax
-                ansNode = i
+            if dist1[i] != -1 and dist2[i] != -1:
+                max_dist = max(dist1[i], dist2[i])
+                if max_dist < min_dist:
+                    min_dist = max_dist
+                    result = i
 
-        return ansNode
+        return result
