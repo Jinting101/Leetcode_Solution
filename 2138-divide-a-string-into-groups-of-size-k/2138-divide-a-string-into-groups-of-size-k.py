@@ -1,9 +1,11 @@
 class Solution:
     def divideString(self, s: str, k: int, fill: str) -> List[str]:
-        left = len(s) % 3
-        rest = fill*2 if left == 1 else fill if left == 2 else ''
-        s = s + rest
+        n = len(s)
+        rest = 0
+        if n % k:
+            rest = (n // k + 1) * k - n
+        s = s + fill*rest
         res = []
-        for i in range(0, len(s), 3):
-            res.append(s[i:i+3])
+        for i in range(0, n, k):
+            res.append(s[i:i+k])
         return res
