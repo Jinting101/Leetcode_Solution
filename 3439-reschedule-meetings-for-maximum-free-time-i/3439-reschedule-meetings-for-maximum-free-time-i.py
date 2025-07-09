@@ -10,10 +10,15 @@ class Solution:
         if endTime[-1] != eventTime:
             gaps.append(eventTime-endTime[-1])
         m = max(1, len(gaps)-k)
-        res = []
-        for i in range(m):
-            res.append(sum(gaps[i:i+k+1]))
-        return max(res)
+        window_size = k + 1
+        window_sum = sum(gaps[:window_size])
+        max_sum = window_sum
+
+        for i in range(1, m):
+            window_sum += gaps[i + window_size - 1] - gaps[i - 1]
+            max_sum = max(max_sum, window_sum)
+
+        return max_sum
 
 
         
