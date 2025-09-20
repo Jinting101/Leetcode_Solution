@@ -29,6 +29,8 @@ class Router:
         return [s, d, t]
 
     def getCount(self, destination: int, startTime: int, endTime: int) -> int:
+        if destination not in self.dest:
+            return 0
         lst = self.dest[destination]
         res = (bisect.bisect_right(lst, endTime) - bisect.bisect_left(lst, startTime))
         return res
