@@ -11,7 +11,7 @@ class Solution:
 
         for i, x in enumerate(nums):
             prefix = (prefix + x) % p
-            need = (prefix - target + p) % p
+            need = (prefix - target) % p
 
             if need in mp:
                 res = min(res, i - mp[need])
