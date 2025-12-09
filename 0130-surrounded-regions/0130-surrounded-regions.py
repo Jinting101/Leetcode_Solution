@@ -13,7 +13,7 @@ class Solution:
                 nr = r + i
                 nc = c + j
                 if 0 <= nr < m and 0 <= nc < n and not visited[nr][nc] and board[nr][nc] == "O":
-                    visited[nr][nc] = 1
+                    # visited[nr][nc] = 1
                     dfs(nr, nc)
         
         for i in range(m):
