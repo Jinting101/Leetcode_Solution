@@ -1,52 +1,38 @@
 class TaskManager:
 
     def __init__(self, tasks: List[List[int]]):
-        self.cur_tasks = set()
-        self.task_to_pri = {}
         self.hp = []
-        self.taskpri_to_user = {}
-
-        for user, task, pri in tasks:
-            self.cur_tasks.add(task)
-            self.task_to_pri[task] = pri
-            heapq.heappush(self.hp, (-pri, -task))
-            self.taskpri_to_user[(pri, task)] = user
-
-        # set()
-        # {task: pri}  task_to_pri
-        # [(-pri, -task)]
-        # {(pri,task): user}    taskpri_to_user
+        self.task_to_user = {}
+        self.task_to_prio = {}
+        for userId, taskId, priority in tasks:
+            self.add(userId, taskId, priority)
+        # (-pri, -tid)
+        # {tid:uid}
+        # {tid:pri}
 
     def add(self, userId: int, taskId: int, priority: int) -> None:
-        self.cur_tasks.add(taskId)
-        self.task_to_pri[taskId] = priority
         heapq.heappush(self.hp, (-priority, -taskId))
-        self.taskpri_to_user[(priority, taskId)] = userId
-    
+        self.task_to_user[taskId] = userId
+        self.task_to_prio[taskId] = priority
 
     def edit(self, taskId: int, newPriority: int) -> None:
-        user = self.taskpri_to_user[(self.task_to_pri[taskId], taskId)]
-        self.taskpri_to_user.pop((self.task_to_pri[taskId], taskId))
-        self.task_to_pri[taskId] = newPriority
-        self.taskpri_to_user[(newPriority, taskId)] = user
         heapq.heappush(self.hp, (-newPriority, -taskId))
-        
+        self.task_to_prio[taskId] = newPriority
 
     def rmv(self, taskId: int) -> None:
-        self.cur_tasks.remove(taskId)
-        self.taskpri_to_user.pop((self.task_to_pri[taskId], taskId))
-        self.task_to_pri.pop(taskId)
+        self.task_to_user.pop(taskId)
+        self.task_to_prio.pop(taskId)
 
     def execTop(self) -> int:
         while self.hp:
-            pri, task = self.hp[0]
-            if -task not in self.cur_tasks or self.task_to_pri[-task] != -pri:
-                heapq.heappop(self.hp)
-            else:
-                pri, task = heapq.heappop(self.hp)
-                user = self.taskpri_to_user[(-pri, -task)]
-                self.rmv(-task)
-                return user
+            negprio, negtid = heapq.heappop(self.hp)
+            if -negtid not in self.task_to_prio:
+                continue
+            if self.task_to_prio[-negtid] != -negprio:
+                continue
+            res = self.task_to_user[-negtid]
+            self.rmv(-negtid)
+            return res
         return -1
 
 
