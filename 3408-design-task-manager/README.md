@@ -1,4 +1,4 @@
-<h2><a href="https://leetcode.com/problems/design-task-manager/?envType=daily-question&envId=2025-09-18">3408. Design Task Manager</a></h2><h3>Medium</h3><hr><p>There is a task management system that allows users to manage their tasks, each associated with a priority. The system should efficiently handle adding, modifying, executing, and removing tasks.</p>
+<h2><a href="https://leetcode.com/problems/design-task-manager">3408. Design Task Manager</a></h2><h3>Medium</h3><hr><p>There is a task management system that allows users to manage their tasks, each associated with a priority. The system should efficiently handle adding, modifying, executing, and removing tasks.</p>
 
 <p>Implement the <code>TaskManager</code> class:</p>
 
