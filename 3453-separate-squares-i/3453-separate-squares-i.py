@@ -21,4 +21,4 @@ class Solution:
             else:
                 lo = mid
 
-        return hi
+        return lo
