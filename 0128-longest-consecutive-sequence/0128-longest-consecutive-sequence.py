@@ -1,40 +1,12 @@
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
-        longest = 0
-        num_set = set(nums)
-
-        for n in num_set:
-            if (n-1) not in num_set:
-                length = 1
-                while (n+length) in num_set:
-                    length += 1
-                longest = max(longest, length)
-        
-        return longest
-
-        
-        def expand(x):
-            res = 1
-            if x+1 in snums:
-                snums.remove(x+1)
-                res += expand(x+1)
-            if x-1 in snums:
-                snums.remove(x-1)
-                res += expand(x-1)
-            return res
-        if not nums:
-            return 0
-        snums = set(nums)
-        res = 1
+        res = 0
+        nums = set(nums)
         for x in nums:
-            if x in snums:
-                snums.remove(x)
-                cur = expand(x)
-                res = max(res, cur)
+            if x-1 not in nums:
+                l = 1
+                while x+1 in nums:
+                    x = x + 1
+                    l += 1
+                res = max(l, res)
         return res
-
-
-
-
-
-
