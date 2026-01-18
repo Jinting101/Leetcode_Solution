@@ -8,31 +8,29 @@ class Solution:
     def btreeGameWinningMove(self, root: Optional[TreeNode], n: int, x: int) -> bool:
         
         dic = defaultdict(int)
-        cur = TreeNode(0)
+        lr = [0, 0]
 
         def dfs(node):
-            nonlocal cur
             if not node:
                 return 0
-
-            if node.val == x:
-                cur = node
             
             l = dfs(node.left)
             r = dfs(node.right)
-            
-            dic[node.val] = l + r
-            return 1 + dic[node.val]
-        
-        dfs(root)
 
-        if dic[root.val] - dic[x] > n // 2:
-                return True
+            if node.val == x:
+                lr[0] = l
+                lr[1] = r
+            
+            tot = l + r
+            return 1 + tot
         
-        if cur.left and dic[cur.left.val] + 1 > n // 2:
+        total = dfs(root)
+        maxp = max(lr)
+
+        if n - (1 + lr[0] + lr[1]) > n //2:
             return True
         
-        if cur.right and dic[cur.right.val] + 1 > n // 2:
+        if maxp > n // 2:
             return True
 
         return False
