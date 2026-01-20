@@ -1,45 +1,27 @@
+def manhattan_distance(p1: List[int], p2: List[int]) -> int:
+    return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
+
 class Solution:
     def minCostConnectPoints(self, points: List[List[int]]) -> int:
-        adj = defaultdict(dict)
         n = len(points)
-        for i,point1 in enumerate(points):
-            a, b = point1
-            for j in range(i+1, n):
-                c, d = points[j]
-                dist = abs(a-c) + abs(b-d)
-                adj[(a,b)][(c,d)] = dist
-                adj[(c,d)][(a,b)] = dist
-        res = 0
-        q = [(0, points[0][0], points[0][1])]
-        visited = set()
-        while q:
-            cost, x, y = heapq.heappop(q)
-            if (x,y) in visited:
-                continue
-            visited.add((x,y))
-            res += cost
-            for new_point in adj[(x,y)]:
-                c, d = new_point
-                dist = adj[(x,y)][new_point]
-                if new_point not in visited:
-                    heapq.heappush(q, (dist, c, d))
-        return res
-
+        heap_dict = {0: 0}  
+        min_heap = [(0, 0)]
         
-                    
+        mst_weight = 0
+        
+        while min_heap:
+            w, u = heappop(min_heap)
+            
+            if heap_dict.get(u, float('inf')) < w:
+                continue
+            
+            mst_weight += w
+            
+            for v in range(n):
+                new_distance = manhattan_distance(points[u], points[v])
     
-        # {(0,0):{(2,2): 4, (5,2):7}
-        # (4,2),(7,3),(7,4),(13,5)
-
-        # pop 4: 1-2 connected:
-
-        # (3,3),(7,4),(7,3),(7,4),(13,5)
-        # (dist, nei)
-
-        # pop 3: 2-3 connected:
-
-        # 4,7,7,7,9,10,13
-
-        # pop 4: 3-4 connected:
-
-
+                if new_distance < heap_dict.get(v, float('inf')):
+                    heap_dict[v] = new_distance
+                    heappush(min_heap, (new_distance, v))
+        
+        return mst_weight
