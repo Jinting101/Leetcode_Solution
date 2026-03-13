@@ -1,16 +1,34 @@
 class Solution:
-    def minNumberOfSeconds(self, height: int, times: list[int]) -> int:
-        lo, hi = 1, 10**16
+    def minNumberOfSeconds(self, mountainHeight: int, workerTimes: List[int]) -> int:
+        
+        def isOK(k):
+            res = 0
+            for time in workerTimes:
+                res += int((-1+(1 + 4 * k*2/time)**0.5) / 2)
+            return res >= mountainHeight
 
-        while lo < hi:
-            mid = (lo + hi) >> 1
-            tot = 0
-            for t in times:
-                tot += int(math.sqrt(mid / t * 2 + 0.25) - 0.5)
-                if tot >= height: break
-            if tot >= height:
-                hi = mid
+
+        l = min(workerTimes)
+        r = l * (mountainHeight+1) * mountainHeight // 2
+
+        while l < r:
+            mid = (l+r) // 2
+            if isOK(mid):
+                r = mid
             else:
-                lo = mid + 1
+                l = mid + 1
+        
+        return l
 
-        return lo
+
+
+        # for worker i to reduce the height by h, should take times[i] * (h+1) * h // 2
+
+
+
+        # maximize h subject to: (h+1)*h <= k*2/time
+        # h**2 + h - k*2/time <= 0
+
+        # time=1, k=3
+
+        # int((1+(1 + 4 * k*2/time)**0.5) / 2)
